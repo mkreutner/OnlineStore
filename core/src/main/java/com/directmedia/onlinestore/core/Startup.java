@@ -6,12 +6,12 @@ import com.directmedia.onlinestore.core.entity.Work;
 
 public class Startup {
 
-	/**
-	 * Main
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Artist tomCruise = new Artist("Tom Cruise");
+    /**
+     * Main
+     * @param args
+     */
+    public static void main(String[] args) {
+	Artist tomCruise = new Artist("Tom Cruise");
         Artist michaelJackson = new Artist("Michael Jackson");
         Artist louisDeFunes = new Artist("Louis De Funes");
         
@@ -42,6 +42,6 @@ public class Startup {
         for (Work work: Catalog.listOfWorks) {
             System.out.println(work.getTitle() + " (" + work.getRelease() + ")");
         }
-	}
+    }
 
 }
