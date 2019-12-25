@@ -37,15 +37,13 @@ public class CatalogueServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            long idWork = 1;
-            
             Artist tomCruise = new Artist("Tom Cruise");
             Artist michaelJackson = new Artist("Michael Jackson");
             Artist louisDeFunes = new Artist("Louis De Funes");
 
-            Work minorityReport = new Work(1, "Minority Report");
-            Work bad = new Work(2, "Bad");
-            Work leGendarmeDeSaintTropez = new Work(3, "Le Gendarme De Saint Tropez");
+            Work minorityReport = new Work("Minority Report");
+            Work bad = new Work("Bad");
+            Work leGendarmeDeSaintTropez = new Work("Le Gendarme De Saint Tropez");
 
             minorityReport.setMainArtist(tomCruise);
             bad.setMainArtist(michaelJackson);

@@ -5,6 +5,9 @@
  */
 package com.directmedia.onlinestore.backoffice.controller;
 
+import com.directmedia.onlinestore.core.entity.Artist;
+import com.directmedia.onlinestore.core.entity.Catalog;
+import com.directmedia.onlinestore.core.entity.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mkreutner
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "AddWorkServlet", urlPatterns = {"/add-work"})
+public class AddWorkServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,21 +35,55 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        String title;
+        int release;
+        String genre;
+        String summary;
+        String mainArtist;
+        
+        String method = request.getMethod().toUpperCase();
+        
+        if (method.compareTo("GET") == 0) {
+            title = request.getParameter("title");
+            release = Integer.parseInt(request.getParameter("release"));
+            genre = request.getParameter("genre");
+            summary = request.getParameter("summary");
+            mainArtist = request.getParameter("main_artist");
+        } else {
+            // todo: implement POST treatment
+            title = "";
+            release = 0;
+            genre = "";
+            summary = "";
+            mainArtist = "";
+        }
+        
+        Artist newArtist = new Artist(mainArtist);
+        Work newWork = new Work(title);
+        newWork.setGenre(genre);
+        newWork.setRelease(release);
+        newWork.setSummary(summary);
+        newWork.setMainArtist(newArtist);
+        Catalog.listOfWorks.add(newWork);
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Back Office</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>OnlineStore - Gestion de la boutique</h1>");
-            out.println("<ul>");
-            out.println("<li><a href=\"/backoffice/catalogue\">Accès au catalogue des oeuvres<a></li>");
-            out.println("<li><a href=\"/backoffice/add-work-form.html\">Ajouter une oeuvre au catalogue<a></li>");
-            out.println("<ul>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<title>Back Office - Ajout Oeuvre</title>"
+                    + "</head>"
+                    + "<body>"
+                    + "  <div>" 
+                    + "    <p>Le film a été ajouté.</p>"
+                    + "    <p>[" + newWork.getId() + "] - " + newWork.getTitle() + "(" + Integer.toString(newWork.getRelease()) + ")</p>"
+                    + "  </div>"
+                    + "  <div>" 
+                    + "    <a href=\"/backoffice/home\">Retour</a>" 
+                    + "  </div>"
+                    + "</body>"
+                    + "</html>");
         }
     }
 

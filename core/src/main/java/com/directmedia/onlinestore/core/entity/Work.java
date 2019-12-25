@@ -2,16 +2,14 @@ package com.directmedia.onlinestore.core.entity;
 
 public class Work {
 
+    static long lastId = 1;
+
     private long id;
     private String title;
     private String genre;
     private int release;
     private String summary;
     private Artist mainArtist;
-
-    public long randLong(long min, long max) {
-        return (new java.util.Random().nextLong() % (max - min)) + min;
-    }
     
     /**
      * Default Constructor
@@ -25,18 +23,9 @@ public class Work {
      */
     public Work(String title) {
         super();
-        this.id = randLong(10000, 100000);
+        this.id = lastId;
         this.title = title;
-    }
-    
-    /**
-     * @param id
-     * @param title
-     */
-    public Work(long id, String title) {
-        super();
-        this.id = id;
-        this.title = title;
+        lastId++;
     }
     
     /**
@@ -44,6 +33,13 @@ public class Work {
      */
     public long getId() {
         return id;
+    }
+    
+    /**
+     * @return the id
+     */
+    public long getLastId() {
+        return lastId;
     }
 
     /**
