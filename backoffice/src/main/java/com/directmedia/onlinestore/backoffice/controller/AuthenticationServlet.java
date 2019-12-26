@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,6 +32,7 @@ public class AuthenticationServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             boolean notAllowed = true;
@@ -56,6 +58,7 @@ public class AuthenticationServlet extends HttpServlet {
 
                 if ((login.compareTo("michel") == 0 && password.compareTo("123456") == 0)
                         || (login.compareTo("caroline") == 0 && password.compareTo("abcdef") == 0)) {
+                    session.setAttribute("identifiant", login);
                     out.println("<h4>Bonjour, " + login + " !</h4>"
                         + "<a href=\"/backoffice/home\">Aller à la page d'accueil...</a>");
                 } else {

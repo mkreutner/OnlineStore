@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,21 +33,34 @@ public class HomeServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        HttpSession session = request.getSession();
+        
+        // Create and initialize greeting with default value.
+        String identifiant = "Guest";
+        Object oIdentifiant = session.getAttribute("identifiant");
+        if (oIdentifiant != null) {
+            // Update greeting if user is authenticate 
+            // => when session contents identifiant attribute.
+            identifiant = oIdentifiant.toString();
+        } 
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Back Office</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>OnlineStore - Gestion de la boutique</h1>");
-            out.println("<ul>");
-            out.println("<li><a href=\"/backoffice/catalogue\">Accès au catalogue des oeuvres<a></li>");
-            out.println("<li><a href=\"/backoffice/add-work-form.html\">Ajouter une oeuvre au catalogue<a></li>");
-            out.println("<ul>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<title>Back Office</title>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h1>OnlineStore - Gestion de la boutique</h1>"
+                    + "<p>Bonjour " + identifiant + ", </p>"
+                    + "<ul>"
+                    + "<li><a href=\"/backoffice/catalogue\">Accès au catalogue des oeuvres<a></li>"
+                    + "<li><a href=\"/backoffice/add-work-form.html\">Ajouter une oeuvre au catalogue<a></li>"
+                    + "<ul>"
+                    + "</body>"
+                    + "</html>");
         }
     }
 
