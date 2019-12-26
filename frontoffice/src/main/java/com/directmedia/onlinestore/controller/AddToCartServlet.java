@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.directmedia.onlinestore.frontoffice.controller;
+package com.directmedia.onlinestore.controller;
 
 import com.directmedia.onlinestore.core.entity.Catalog;
+import com.directmedia.onlinestore.core.entity.ShoppingCart;
 import com.directmedia.onlinestore.core.entity.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,17 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author mkreutner
  */
-@WebServlet(name = "WorkDetailsServlet", urlPatterns = {"/work-details"})
-public class WorkDetailsServlet extends HttpServlet {
-
-    private String printKeyValue(String key, String value) {
-        return "<li><em>" + key + "</em> : " + value + "</li>";
-    }
+@WebServlet(name = "AddToCartServlet", urlPatterns = {"/addToCart"})
+public class AddToCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,56 +36,68 @@ public class WorkDetailsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            int nbWorks = Catalog.listOfWorks.size();
-            int id = Integer.parseInt(request.getParameter("id"));
+            boolean notAllowed = true;
 
-            Work currentWork = new Work();
-            boolean workFound = false;
+            String method = request.getMethod().toUpperCase();
 
-            Iterator<Work> itr = Catalog.listOfWorks.iterator();
-            while (itr.hasNext() && workFound == false) {
-                currentWork = itr.next();
-                if (currentWork.getId() == id) {
-                    workFound = true;
-                }
+            if (method.compareTo("POST") == 0) {
+                notAllowed = false;
             }
 
+            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>"
                     + "<html>"
                     + "<head>"
-                    + "<title>Front Office - Oeuvre</title>"
-                    + "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">"
+                    + "<title>Front Office - Caddie</title>"
                     + "</head>"
                     + "<body>");
-            if (workFound == false) {
-                out.println("<h1>Aucune oeuvre trouvée...</h1>");
+            if (notAllowed == true) {
+                out.println("<h1>Methode de soumission du formulaire interdite...</h1>");
             } else {
-                out.println("<h1>Détail de l'oeuvre : "
-                        + currentWork.getTitle()
-                        + " (" + "" + "/" + Integer.toString(nbWorks) + ")</h1>"
-                        + "<ul>"
-                        + printKeyValue("Titre", currentWork.getTitle())
-                        + printKeyValue("Genre", currentWork.getGenre())
-                        + printKeyValue("Année", Integer.toString(currentWork.getRelease()))
-                        + printKeyValue("Resumé", currentWork.getSummary())
-                        + "<li><em>Act(eur/rice) Principal(e)</em> : <ul>"
-                        + printKeyValue("Nom", currentWork.getMainArtist().getName())
-                        + "</ul>"
-                        + "</ul>"
-                );
+                // Do the stuff...
+                // Retreive work id
+                int workId = Integer.parseInt(request.getParameter("work_id"));
+                // Search work in catalog
+                Work currentWork = new Work();
+                boolean workFound = false;
+
+                Iterator<Work> itr = Catalog.listOfWorks.iterator();
+                while (itr.hasNext() && workFound == false) {
+                    currentWork = itr.next();
+                    if (currentWork.getId() == workId) {
+                        workFound = true;
+                    }
+                }
+                
+                if (workFound == false) {
+                    out.println("<h1>L'oeuvre ne peut être ajouter au caddie car elle est inconnue</h1>"
+                            + "<input type=\"button\" value=\"Retour à la liste\" onclick=\"history.back()\">");
+                }
+                
+                ShoppingCart shoppingCart = null;
+                Object oShoppingCart = session.getAttribute("ShoppingCart");
+                if (oShoppingCart == null) {
+                    // Customer has not yet a shopping cart 
+                    shoppingCart = new ShoppingCart();
+                } else {
+                    // Customer has already a shopping cart
+                    shoppingCart = (ShoppingCart)oShoppingCart;
+                }
+                shoppingCart.items.add(currentWork);
+                
+                session.setAttribute("ShoppingCart", shoppingCart);
+                
+                out.println("<h1>Oeuvre ajoutée au caddie (" + shoppingCart.items.size() + ")</h1>"
+                        + "<a href=\"/frontoffice/catalogue\">Retour au catalogue</a>");
             }
-            out.println("</hr>"
-                    + "<form method=\"POST\" action=\"/frontoffice/addToCart\">"
-                    + "<input type=\"hidden\" name=\"work_id\" value=\"" + Integer.toString(id) + "\">"
-                    + "<input type=\"submit\" value=\"Ajouter au caddie\">"
-                    + "</form>"
-                    + "<input type=\"button\" value=\"Retour à la liste\" onclick=\"history.back()\">"
-                    + "</body>"
-                    + "</html>"
-            );
+
+            out.println("</body>"
+                    + "</html>");
         }
     }
 
