@@ -33,12 +33,12 @@ public class AuthenticationServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            boolean notAllowed = false;
+            boolean notAllowed = true;
 
             String method = request.getMethod().toUpperCase();
 
             if (method.compareTo("POST") == 0) {
-                notAllowed = true;
+                notAllowed = false;
             }
 
             /* TODO output your page here. You may use following sample code. */
@@ -49,7 +49,7 @@ public class AuthenticationServlet extends HttpServlet {
                     + "</head>"
                     + "<body>");
 
-            if (notAllowed == true) {
+            if (notAllowed != true) {
                 // Do the treatment...
                 String login = request.getParameter("login");
                 String password = request.getParameter("password");

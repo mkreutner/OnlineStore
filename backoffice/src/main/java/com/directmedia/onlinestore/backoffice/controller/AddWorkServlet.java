@@ -35,6 +35,7 @@ public class AddWorkServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        boolean notAllowed = true;
         
         String title;
         int release;
@@ -44,29 +45,10 @@ public class AddWorkServlet extends HttpServlet {
         
         String method = request.getMethod().toUpperCase();
         
-        if (method.compareTo("GET") == 0) {
-            title = request.getParameter("title");
-            release = Integer.parseInt(request.getParameter("release"));
-            genre = request.getParameter("genre");
-            summary = request.getParameter("summary");
-            mainArtist = request.getParameter("main_artist");
-        } else {
-            // todo: implement POST treatment
-            title = "";
-            release = 0;
-            genre = "";
-            summary = "";
-            mainArtist = "";
+        if (method.compareTo("POST") == 0) {
+            notAllowed = false;
         }
-        
-        Artist newArtist = new Artist(mainArtist);
-        Work newWork = new Work(title);
-        newWork.setGenre(genre);
-        newWork.setRelease(release);
-        newWork.setSummary(summary);
-        newWork.setMainArtist(newArtist);
-        Catalog.listOfWorks.add(newWork);
-        
+            
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>"
@@ -74,15 +56,35 @@ public class AddWorkServlet extends HttpServlet {
                     + "<head>"
                     + "<title>Back Office - Ajout Oeuvre</title>"
                     + "</head>"
-                    + "<body>"
-                    + "  <div>" 
-                    + "    <p>Le film a été ajouté.</p>"
-                    + "    <p>[" + newWork.getId() + "] - " + newWork.getTitle() + "(" + Integer.toString(newWork.getRelease()) + ")</p>"
-                    + "  </div>"
-                    + "  <div>" 
-                    + "    <a href=\"/backoffice/home\">Retour</a>" 
-                    + "  </div>"
-                    + "</body>"
+                    + "<body>");
+            
+            if (notAllowed != true) {
+                title = request.getParameter("title");
+                release = Integer.parseInt(request.getParameter("release"));
+                genre = request.getParameter("genre");
+                summary = request.getParameter("summary");
+                mainArtist = request.getParameter("main_artist");
+                
+                Artist newArtist = new Artist(mainArtist);
+                Work newWork = new Work(title);
+                newWork.setGenre(genre);
+                newWork.setRelease(release);
+                newWork.setSummary(summary);
+                newWork.setMainArtist(newArtist);
+                Catalog.listOfWorks.add(newWork);
+        
+                out.println("  <div>" 
+                        + "    <p>Le film a été ajouté.</p>"
+                        + "    <p>[" + newWork.getId() + "] - " + newWork.getTitle() + "(" + Integer.toString(newWork.getRelease()) + ")</p>"
+                        + "  </div>"
+                        + "  <div>" 
+                        + "    <a href=\"/backoffice/home\">Retour</a>" 
+                        + "  </div>");
+            } else {
+                out.println("<h1>Methode de soumission du formulaire interdite...</h1>");
+            }
+            
+            out.println("</body>"
                     + "</html>");
         }
     }
