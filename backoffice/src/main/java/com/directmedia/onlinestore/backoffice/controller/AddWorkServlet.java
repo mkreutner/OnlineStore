@@ -81,6 +81,7 @@ public class AddWorkServlet extends HttpServlet {
                     newWork.setMainArtist(newArtist);
                     Catalog.listOfWorks.add(newWork);
 
+                    request.setAttribute("identifiantOeuvre", newWork.getId());
                     RequestDispatcher dispatcher = request.getRequestDispatcher("/workAddedSuccess");
                     dispatcher.forward(request, response);
                 } else {

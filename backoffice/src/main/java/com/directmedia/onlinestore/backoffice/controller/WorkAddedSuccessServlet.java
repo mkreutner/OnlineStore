@@ -33,15 +33,25 @@ public class WorkAddedSuccessServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            long identifiantOeuvre = 0;
+            Object oIdentifiantOeuvre = request.getAttribute("identifiantOeuvre");
+            if (oIdentifiantOeuvre != null) {
+                identifiantOeuvre = Long.parseLong(oIdentifiantOeuvre.toString());
+            }
+            
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>"
                     + "<html>"
                     + "<head>"
                     + "<title>Back Office - Oeuvre ajoutée avec succès</title>"
                     + "</head>"
-                    + "<body>"
-                    + "<h1>L'oeuvre à bien été ajoutée</h1>"
-                    + "<p><a href=\"/backoffice/catalogue\">Retour à la liste</a></p>"
+                    + "<body>");
+            if (oIdentifiantOeuvre != null) {
+                out.println("<h1>L'oeuvre " + Long.toString(identifiantOeuvre) + " a bien été ajoutée</h1>");
+            } else {
+                out.println("<h1>L'oeuvre a bien été ajoutée, mais son identifiant n'est pas connu...</h1>");
+            }
+            out.println("<p><a href=\"/backoffice/catalogue\">Retour à la liste</a></p>"
                     + "</body>"
                     + "</html>");
         }
