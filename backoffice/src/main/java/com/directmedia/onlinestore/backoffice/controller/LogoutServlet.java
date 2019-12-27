@@ -18,8 +18,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author mkreutner
  */
-@WebServlet(name = "HomeServlet", urlPatterns = {"/home"})
-public class HomeServlet extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,16 +34,10 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        // Retreive the session
         HttpSession session = request.getSession();
-        
-        // Create and initialize greeting with default value.
-        String identifiant = "Guest";
-        Object oIdentifiant = session.getAttribute("identifiant");
-        if (oIdentifiant != null) {
-            // Update greeting if user is authenticate 
-            // => when session contents identifiant attribute.
-            identifiant = oIdentifiant.toString();
-        } 
+        // Reset the session
+        session.invalidate();
         
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -53,18 +47,9 @@ public class HomeServlet extends HttpServlet {
                     + "<title>Back Office</title>"
                     + "</head>"
                     + "<body>"
-                    + "<h1>OnlineStore - Gestion de la boutique</h1>"
-                    + "<p>Bonjour " + identifiant + ", ");
-            if (identifiant.compareTo("Guest") != 0) {
-                out.println("(<a href=\"/backoffice/logout\">Déconnexion</a>)");
-            } else {
-                out.println("(<a href=\"/backoffice/login.html\">Se connecter</a>)");
-            }
-            out.println("</p>"
-                    + "<ul>"
-                    + "<li><a href=\"/backoffice/catalogue\">Accès au catalogue des oeuvres<a></li>"
-                    + "<li><a href=\"/backoffice/add-work-form.html\">Ajouter une oeuvre au catalogue<a></li>"
-                    + "<ul>"
+                    + "<h3>Vous avez été déconnecté, cliquez "
+                    + "<a href=\"/backoffice/login.html\">ici</a>"
+                    + " pour vous reconnecter à nouveau.</h3>"
                     + "</body>"
                     + "</html>");
         }
