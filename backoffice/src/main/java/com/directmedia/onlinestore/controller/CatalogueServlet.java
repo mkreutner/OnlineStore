@@ -96,7 +96,8 @@ public class CatalogueServlet extends HttpServlet {
                         + "</li>");
             }
             out.println("</ul>");
-            
+            out.println("<hr/>");
+            out.println("<a href=\"/backoffice/add-work-form.html\">Ajouter une oeuvre</a>");
             out.println("</body>");
             out.println("</html>");
         }

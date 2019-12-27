@@ -10,6 +10,8 @@ import com.directmedia.onlinestore.core.entity.Catalog;
 import com.directmedia.onlinestore.core.entity.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +36,6 @@ public class AddWorkServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         boolean notAllowed = true;
         
         String title;
@@ -49,43 +50,50 @@ public class AddWorkServlet extends HttpServlet {
             notAllowed = false;
         }
             
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<title>Back Office - Ajout Oeuvre</title>"
-                    + "</head>"
-                    + "<body>");
-            
-            if (notAllowed != true) {
+        if (notAllowed != true) {
+            try {
                 title = request.getParameter("title");
                 release = Integer.parseInt(request.getParameter("release"));
                 genre = request.getParameter("genre");
                 summary = request.getParameter("summary");
                 mainArtist = request.getParameter("main_artist");
-                
-                Artist newArtist = new Artist(mainArtist);
-                Work newWork = new Work(title);
-                newWork.setGenre(genre);
-                newWork.setRelease(release);
-                newWork.setSummary(summary);
-                newWork.setMainArtist(newArtist);
-                Catalog.listOfWorks.add(newWork);
-        
-                out.println("  <div>" 
-                        + "    <p>Le film a été ajouté.</p>"
-                        + "    <p>[" + newWork.getId() + "] - " + newWork.getTitle() + "(" + Integer.toString(newWork.getRelease()) + ")</p>"
-                        + "  </div>"
-                        + "  <div>" 
-                        + "    <a href=\"/backoffice/home\">Retour</a>" 
-                        + "  </div>");
-            } else {
-                out.println("<h1>Methode de soumission du formulaire interdite...</h1>");
+
+                Work currentWork = new Work();
+                boolean alreadyExists = false;
+
+                Iterator<Work> itr = Catalog.listOfWorks.iterator();
+                while (itr.hasNext() && alreadyExists == false) {
+                    currentWork = itr.next();
+                    if ((currentWork.getTitle().compareTo(title) == 0)                              // same title
+                            && (currentWork.getRelease() == release)                                // same release year
+                            && (currentWork.getMainArtist().getName().compareTo(mainArtist) == 0)   // same main artist
+                       ) {
+                        alreadyExists = true;
+                    }
+                }
+
+                if (alreadyExists == false) {
+                    Artist newArtist = new Artist(mainArtist);
+                    Work newWork = new Work(title);
+                    newWork.setGenre(genre);
+                    newWork.setRelease(release);
+                    newWork.setSummary(summary);
+                    newWork.setMainArtist(newArtist);
+                    Catalog.listOfWorks.add(newWork);
+
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/workAddedSuccess");
+                    dispatcher.forward(request, response);
+                } else {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/workAddedFailure");
+                    dispatcher.forward(request, response);
+                }
+            } catch (NumberFormatException nfe) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/workAddedFailure");
+                dispatcher.forward(request, response);
             }
-            
-            out.println("</body>"
-                    + "</html>");
+        } else {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/workAddedFailure");
+            dispatcher.forward(request, response);
         }
     }
 
