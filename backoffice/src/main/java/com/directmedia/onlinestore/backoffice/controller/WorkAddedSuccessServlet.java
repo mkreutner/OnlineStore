@@ -51,7 +51,7 @@ public class WorkAddedSuccessServlet extends HttpServlet {
             } else {
                 out.println("<h1>L'oeuvre a bien été ajoutée, mais son identifiant n'est pas connu...</h1>");
             }
-            out.println("<p><a href=\"/backoffice/catalogue\">Retour à la liste</a></p>"
+            out.println("<p><a href=\"catalogue\">Retour à la liste</a></p>"
                     + "</body>"
                     + "</html>");
         }

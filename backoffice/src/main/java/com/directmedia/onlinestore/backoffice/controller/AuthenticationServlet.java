@@ -60,10 +60,10 @@ public class AuthenticationServlet extends HttpServlet {
                         || (login.compareTo("caroline") == 0 && password.compareTo("abcdef") == 0)) {
                     session.setAttribute("identifiant", login);
                     out.println("<h4>Bonjour, " + login + " !</h4>"
-                        + "<a href=\"/backoffice/home\">Aller à la page d'accueil...</a>");
+                        + "<a href=\"home.jsp\">Aller à la page d'accueil...</a>");
                 } else {
                     out.println("<h4>Identifiant et/ou Mot de Passe erroné(s)</h4>"
-                        + "<a href=\"/backoffice/login.html\">Essayer à nouveau...</a>");
+                        + "<a href=\"login.html\">Essayer à nouveau...</a>");
                 }
             } else {
                 out.println("<h1>Methode de soumission du formulaire interdite...</h1>");

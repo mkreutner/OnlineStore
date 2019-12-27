@@ -48,7 +48,7 @@ public class LogoutServlet extends HttpServlet {
                     + "</head>"
                     + "<body>"
                     + "<h3>Vous avez été déconnecté, cliquez "
-                    + "<a href=\"/backoffice/login.html\">ici</a>"
+                    + "<a href=\"login.html\">ici</a>"
                     + " pour vous reconnecter à nouveau.</h3>"
                     + "</body>"
                     + "</html>");
