@@ -16,31 +16,11 @@
               crossorigin="anonymous">
     </head>
     <body>
-        <%
-            // Create and initialize greeting with default value.
-            String identifiant = "Guest";
-            Object oIdentifiant = session.getAttribute("identifiant");
-            if (oIdentifiant != null) {
-                // Update greeting if user is authenticate 
-                // => when session contents identifiant attribute.
-                identifiant = oIdentifiant.toString();
-            } 
-        %>
         <div class="container-fluid">
             <h1>OnlineStore - Gestion de la boutique</h1>
             <p>
-                Bonjour <%=identifiant%>,
-                <%
-                    if (identifiant.compareTo("Guest") != 0) {
-                %>
-                (<a href="logout">Déconnexion</a>)
-                <%
-                    } else {
-                %>
-                (<a href="login.html">Se connecter</a>)
-                <%
-                }
-                %>
+                Bonjour ${ not empty sessionScope.identifiant ? sessionScope.identifiant : "Guest"},
+                ${ not empty sessionScope.identifiant ? "(<a href=\"logout\">Déconnexion</a>)" : "(<a href=\"login.html\">Se connecter</a>)"}
             </p>
             <ul>
                 <li><a href="catalogue.jsp">Accès au catalogue des oeuvres<a></li>
