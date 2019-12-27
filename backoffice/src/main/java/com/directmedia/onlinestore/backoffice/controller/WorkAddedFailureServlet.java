@@ -41,7 +41,7 @@ public class WorkAddedFailureServlet extends HttpServlet {
                     + "</head>"
                     + "<body>"
                     + "<h1>Une erreur est survenue, l'oeuvre n'a pas été ajoutée.</h1>"
-                    + "<p><a href=\"catalogue\">Retour à la liste</a></p>"
+                    + "<p><a href=\"catalogue.jsp\">Retour à la liste</a></p>"
                     + "</body>"
                     + "</html>");
         }
