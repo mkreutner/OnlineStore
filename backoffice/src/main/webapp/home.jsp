@@ -23,7 +23,7 @@
                 ${ not empty sessionScope.identifiant ? "(<a href=\"logout\">Déconnexion</a>)" : "(<a href=\"login.html\">Se connecter</a>)"}
             </p>
             <ul>
-                <li><a href="catalogue.jsp">Accès au catalogue des oeuvres<a></li>
+                <li><a href="catalogue">Accès au catalogue des oeuvres<a></li>
                 <li><a href="add-work-form.html">Ajouter une oeuvre au catalogue<a></li>
             <ul>
         </div>

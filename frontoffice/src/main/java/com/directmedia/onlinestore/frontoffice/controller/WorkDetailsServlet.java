@@ -24,10 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "WorkDetailsServlet", urlPatterns = {"/work-details"})
 public class WorkDetailsServlet extends HttpServlet {
 
-    private String printKeyValue(String key, String value) {
-        return "<li><em>" + key + "</em> : " + value + "</li>";
-    }
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
