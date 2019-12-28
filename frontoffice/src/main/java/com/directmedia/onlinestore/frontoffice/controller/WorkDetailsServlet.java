@@ -10,6 +10,7 @@ import com.directmedia.onlinestore.core.entity.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +39,6 @@ public class WorkDetailsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             int nbWorks = Catalog.listOfWorks.size();
@@ -55,39 +55,14 @@ public class WorkDetailsServlet extends HttpServlet {
                 }
             }
 
-            out.println("<!DOCTYPE html>"
-                    + "<html>"
-                    + "<head>"
-                    + "<title>Front Office - Oeuvre</title>"
-                    + "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css\" integrity=\"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm\" crossorigin=\"anonymous\">"
-                    + "</head>"
-                    + "<body>");
             if (workFound == false) {
-                out.println("<h1>Aucune oeuvre trouvée...</h1>");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/work-not-found.jsp");
+                dispatcher.forward(request, response);
             } else {
-                out.println("<h1>Détail de l'oeuvre : "
-                        + currentWork.getTitle()
-                        + " (" + "" + "/" + Integer.toString(nbWorks) + ")</h1>"
-                        + "<ul>"
-                        + printKeyValue("Titre", currentWork.getTitle())
-                        + printKeyValue("Genre", currentWork.getGenre())
-                        + printKeyValue("Année", Integer.toString(currentWork.getRelease()))
-                        + printKeyValue("Resumé", currentWork.getSummary())
-                        + "<li><em>Act(eur/rice) Principal(e)</em> : <ul>"
-                        + printKeyValue("Nom", currentWork.getMainArtist().getName())
-                        + "</ul>"
-                        + "</ul>"
-                );
+                request.setAttribute("work", currentWork);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/work-details.jsp");
+                dispatcher.forward(request, response);
             }
-            out.println("</hr>"
-                    + "<form method=\"POST\" action=\"/frontoffice/addToCart\">"
-                    + "<input type=\"hidden\" name=\"work_id\" value=\"" + Integer.toString(id) + "\">"
-                    + "<input type=\"submit\" value=\"Ajouter au caddie\">"
-                    + "</form>"
-                    + "<input type=\"button\" value=\"Retour à la liste\" onclick=\"history.back()\">"
-                    + "</body>"
-                    + "</html>"
-            );
         }
     }
 
