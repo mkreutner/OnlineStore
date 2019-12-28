@@ -79,7 +79,7 @@ public class CatalogueServlet extends HttpServlet {
         
         request.setAttribute("works", Catalog.listOfWorks);
         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/catalogue.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/catalogue.jsp");
         dispatcher.forward(request, response);
     }
 

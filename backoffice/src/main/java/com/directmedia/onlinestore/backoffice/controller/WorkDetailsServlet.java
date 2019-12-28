@@ -50,11 +50,11 @@ public class WorkDetailsServlet extends HttpServlet {
         }
 
         if (workFound == false) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/work-not-found.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/work-not-found.jsp");
             dispatcher.forward(request, response);
         } else {
             request.setAttribute("work", currentWork);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/work-details.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/work-details.jsp");
             dispatcher.forward(request, response);
         }
 
