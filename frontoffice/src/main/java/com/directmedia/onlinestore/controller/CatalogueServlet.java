@@ -8,7 +8,9 @@ package com.directmedia.onlinestore.controller;
 import com.directmedia.onlinestore.core.entity.Artist;
 import com.directmedia.onlinestore.core.entity.Catalog;
 import com.directmedia.onlinestore.core.entity.Work;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -76,10 +78,11 @@ public class CatalogueServlet extends HttpServlet {
             Catalog.listOfWorks.add(leGendarmeDeSaintTropez);
         }
         
-        request.setAttribute("works", Catalog.listOfWorks);
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/catalogue.jsp");
-        dispatcher.forward(request, response);
+        response.setContentType("application/json;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(out, Catalog.listOfWorks);
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

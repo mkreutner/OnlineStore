@@ -6,10 +6,14 @@ $(document).ready(function () {
         $.ajax({
             url: "catalogue",
             success: function (result) {
-                $("div[id=catalogue]").append(result);
+                result.forEach((elem) => {
+                    const row = "<a href=\"work-details?id=" + elem.id
+                        + "\" class=\"list-group-item list-group-item-action\">"
+                        + elem.title + " (" + elem.release + ")</a>";
+                    $("div[id=catalogue]").append(row);
+                });
+                
             }
         });
     });
 });
-
-
