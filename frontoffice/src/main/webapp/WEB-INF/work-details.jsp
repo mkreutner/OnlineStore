@@ -31,7 +31,7 @@
                 <input type="hidden" name="work_id" value=${requestScope.work.id}>
                 <input type="submit" value="Ajouter au caddie" class="btn btn-primary">
             </form>
-            <a href="catalogue" class="btn btn-link btn-secondary-out">Retour au catalogue des oeuvres</a>
+            <a href="home.jsp" class="btn btn-link btn-secondary-out">Retour au catalogue des oeuvres</a>
         </div>
         <!-- Bootstrap 4 scripts -->        
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
