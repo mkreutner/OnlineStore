@@ -6,27 +6,28 @@
 package com.directmedia.onlinestore.backoffice.resources;
 
 import com.directmedia.onlinestore.core.entity.Artist;
-import com.directmedia.onlinestore.core.entity.Catalog;
 import com.directmedia.onlinestore.core.entity.Work;
+import com.directmedia.onlinestore.core.entity.WorkPayload;
 import java.util.HashSet;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author mkreutner
  */
-@Path("/catalogue")
-public class CatalogueResource {
+@Path("/work")
+public class WorkResource {
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/list")
-    public HashSet<Work> liste() {
-
-        if (Catalog.listOfWorks.isEmpty()) {
+    private static HashSet<Work> works = new HashSet<Work>();
+    
+    static {
+        if( works.isEmpty()) {
             Artist tomCruise = new Artist("Tom Cruise");
             Artist michaelJackson = new Artist("Michael Jackson");
             Artist louisDeFunes = new Artist("Louis De Funes");
@@ -61,13 +62,45 @@ public class CatalogueResource {
             bad.setGenre("Pop");
             leGendarmeDeSaintTropez.setGenre("Comédie");
 
-            Catalog.listOfWorks.add(minorityReport);
-            Catalog.listOfWorks.add(bad);
-            Catalog.listOfWorks.add(leGendarmeDeSaintTropez);
+            works.add(minorityReport);
+            works.add(bad);
+            works.add(leGendarmeDeSaintTropez);
         }
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public HashSet<Work> liste() {
+        return works;
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response add(WorkPayload payload) throws Exception{
+        
+        String title = payload.getTitle();
+        int release = payload.getRelease();
+        String genre = payload.getGenre();
+        String summary = payload.getSummary();
+        String mainArtist = payload.getMain_artist();
 
-        return Catalog.listOfWorks;
+        System.out.println("==========================");
+        System.out.println(title);
+        System.out.println(release);
+        System.out.println(genre);
+        System.out.println(summary);
+        System.out.println(mainArtist);
+        System.out.println("==========================");
 
+        Artist artist = new Artist(mainArtist);
+        Work work = new Work(title);
+        work.setMainArtist(artist);
+        work.setRelease(release);
+        work.setSummary(summary);
+        work.setGenre(genre);
+        works.add(work);
+        
+        return Response.status(Response.Status.CREATED).build();
     }
 
 }
