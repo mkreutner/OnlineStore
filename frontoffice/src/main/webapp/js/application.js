@@ -4,7 +4,7 @@ $(document).ready(function () {
         
         $('div[id=catalogue]').empty();
         $.ajax({
-            url: "catalogue",
+            url: "rest/catalogue/list",
             success: function (result) {
                 result.forEach((elem) => {
                     const row = "<a href=\"work-details?id=" + elem.id
