@@ -1,3 +1,10 @@
 /frontoffice/target/
 /core/target/
 /backoffice/target/
+/services/target/
+/backoffice-frontend/nbproject/private/
+/frontoffice-frontend/nbproject/private/
+/frontoffice-frontend/build/
+/frontoffice-frontend/dist/
+/backoffice-frontend/build/
+/backoffice-frontend/dist/

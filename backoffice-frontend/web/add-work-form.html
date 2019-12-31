@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Back Office - Ajout Oeuvre</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="col col-6">
+                    <form action="add-work" method="POST">
+                        <fieldset>
+                            <legend>Work</legend>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="title">Titre : </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="title" name="title" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="release">Année de sortie : </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="release" name="release" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="genre">Genre : </label>
+                                <div class="col-sm-10">    
+                                    <input class="form-control" id="genre" name="genre" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="summary">Résumé : </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="summary" name="summary" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="main_artist">Artiste principal : </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="main_artist" name="main_artist" type="text" />
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="container">
+                            <div class="row">
+                                <input class="col-6 btn btn-secondary float-leftt" type="reset" value="Réinitialiser" />
+                                <input class="col-6 btn btn-primary float-right" type="submit" value="Créer" />
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>
